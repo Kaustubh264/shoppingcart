@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('git checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/Kaustubh264/shoppingcart.git'
+                git branch: 'master', url: 'https://github.com/ygminds73/Ekart.git'
             }
         }
 
@@ -34,8 +34,8 @@ pipeline {
             steps {
                 withSonarQubeEnv('sonar-scanner') {
                     sh "${env.SCANNER_HOME}/bin/sonar-scanner \
-                        -Dsonar.projectKey=shoppingcart \
-                        -Dsonar.projectName=shoppingcart \
+                        -Dsonar.projectKey=EKART \
+                        -Dsonar.projectName=EKART \
                         -Dsonar.java.binaries=target/classes"
                 }
             }
@@ -68,7 +68,7 @@ pipeline {
         stage('build and Tag docker image') {
             steps {
                 script {
-                        sh "docker build -t Kaustubh264/shoppingcart:latest -f docker/Dockerfile ."
+                        sh "docker build -t youngminds73/ekart:latest -f docker/Dockerfile ."
                     }
             }
         }
@@ -77,8 +77,8 @@ pipeline {
             steps{
                 script{
                    withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                   sh 'docker login -u kaustubhtayade -p ${dockerhubpwd}'}
-                   sh 'docker push Kaustubh264/shoppingcart:latest'
+                   sh 'docker login -u youngminds73 -p ${dockerhubpwd}'}
+                   sh 'docker push youngminds73/ekart:latest'
                 }
             }
         }
